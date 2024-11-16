@@ -85,7 +85,7 @@ function App() {
       setIsFailure(true);
       e.target.answer.value = ""
     }
-    setTimeout(()=>{setIsFailure(false);setIsSuccess(false);}, 150000);
+    setTimeout(()=>{setIsFailure(false);setIsSuccess(false);}, 1000);
   }
 
   const start = () => {
