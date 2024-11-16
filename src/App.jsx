@@ -59,7 +59,7 @@ function App() {
         <form href="" onSubmit={checkAnswer}>
           <input id="answer" type="text" class="form-control" placeholder="Answer"/>
           <br></br>
-          <button type="submit">Next</button>
+          <button type="submit" class="btn btn-dark">Next</button>
         </form>
       </div>
     </>
