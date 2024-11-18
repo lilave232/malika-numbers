@@ -6,10 +6,10 @@ import './App.css'
 function App() {
   //const words = ["Plein","Carre","Cheval","Transversale","Sixain"];
   //const numbers = [2,3,4,5,6,7,8,9,10];
-  const words = ["Plein","Cheval"];
+  const words = ["Cheval"];
   const numbers = [11,12,13,14,15,16,17,18,19,20];
   const [setValues, setSetValues] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(240);
+  const [timeLeft, setTimeLeft] = useState(30);
   const [isStarted, setIsStarted] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
 
