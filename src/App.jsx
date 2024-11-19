@@ -4,14 +4,17 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  //const words = ["Plein","Carre","Cheval","Transversale","Sixain"];
-  //const numbers = [2,3,4,5,6,7,8,9,10];
-  const words = ["Cheval"];
-  const numbers = [11,12,13,14,15,16,17,18,19,20];
+  const words = ["Plein","Carre","Cheval","Transversale","Sixain"];
+  const numbers = [2,3,4,5,6,7,8,9,10];
+  const words2 = ["Plein","Cheval"];
+  const numbers2 = [11,12,13,14,15,16,17,18,19,20];
+  //const words = ["Cheval"];
+  //const numbers = [11,12,13,14,15,16,17,18,19,20];
   const [setValues, setSetValues] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(30);
+  const [timeLeft, setTimeLeft] = useState(6000);
   const [isStarted, setIsStarted] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
 
   useEffect(() => {
     if (timeLeft <= 0) {
@@ -64,7 +67,12 @@ function App() {
   const [isFailure, setIsFailure] = useState(false);
 
   const newSet = () => {
-    setCount(count + 1);
+    if (count < setValues.length) setCount(count + 1);
+    if (setValues.length > 0 && count == setValues.length-1) {
+      setIsStarted(false);
+      setIsFinished(true);
+      setIsCompleted(true);
+    }
   }
 
   const checkAnswer = (e) => {
@@ -91,8 +99,10 @@ function App() {
   }
 
   const start = () => {
-    setTimeLeft(150);
-    const values = randomizeSet(buildUniquePairSet(words,numbers));
+    setTimeLeft(6000);
+    let values = randomizeSet(buildUniquePairSet(words,numbers));
+    values.push(...randomizeSet(buildUniquePairSet(words2,numbers2)));
+    values = randomizeSet(values);
     setSetValues(values);
     newSet();
     setCount(0);
@@ -100,9 +110,12 @@ function App() {
     setIsStarted(true);
   }
 
+  if (isCompleted) return <><h1>You Win</h1><p>{count}/{setValues.length}</p></>
+
   return (
     <>
       <div>
+        <h1>❤️</h1>
         {isStarted ? 
           <>
             <div>
