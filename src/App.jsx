@@ -10,11 +10,15 @@ function App() {
   const numbers2 = [11,12,13,14,15,16,17,18,19,20];
   //const words = ["Cheval"];
   //const numbers = [11,12,13,14,15,16,17,18,19,20];
+  const maxSeconds = 420
   const [setValues, setSetValues] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(6000);
+  const [timeLeft, setTimeLeft] = useState(maxSeconds);
   const [isStarted, setIsStarted] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(0);
+
+  const [incorrect, setIsIncorrect] = useState([])
 
   useEffect(() => {
     if (timeLeft <= 0) {
@@ -22,6 +26,10 @@ function App() {
       setIsFinished(true);
       return;
     };
+
+    if (isFinished) {
+      return;
+    }
 
     const intervalId = setInterval(() => {
       setTimeLeft((prevTime) => prevTime - 1);
@@ -89,17 +97,23 @@ function App() {
       setIsSuccess(true);
       setIsFailure(false);
       newSet();
+      setIsCorrect(isCorrect + 1);
       e.target.answer.value = ""
     } else {
       setIsSuccess(false);
       setIsFailure(true);
+      incorrect.push(randomWord + " " + randomNumber);
+      console.log(incorrect);
+      newSet();
       e.target.answer.value = ""
     }
     setTimeout(()=>{setIsFailure(false);setIsSuccess(false);}, 1000);
   }
 
   const start = () => {
-    setTimeLeft(6000);
+    setIsCorrect(0);
+    setIsIncorrect([]);
+    setTimeLeft(maxSeconds);
     let values = randomizeSet(buildUniquePairSet(words,numbers));
     values.push(...randomizeSet(buildUniquePairSet(words2,numbers2)));
     values = randomizeSet(values);
@@ -108,9 +122,18 @@ function App() {
     setCount(0);
     setIsFinished(false);
     setIsStarted(true);
+    setIsCompleted(false);
   }
 
-  if (isCompleted) return <><h1>You Win</h1><p>{count}/{setValues.length}</p></>
+  if (isCompleted) return <>
+    <h1>Finished</h1>
+    <p>You got {isCorrect}/{setValues.length} in {maxSeconds - timeLeft} seconds</p>
+    <h1>Errors</h1>
+    {incorrect.map((item) => {
+      return <p>{item}</p>
+    })}
+    <button onClick={start} class="btn btn-dark">Start</button>
+  </>
 
   return (
     <>
@@ -144,7 +167,13 @@ function App() {
           </>
           :
           <div>
-            {isFinished ? <h1>You Got {count}/{setValues.length}!</h1> : <></>}
+            {isFinished ? <><h1>Finished</h1><p>{isCorrect}/{setValues.length}! in {maxSeconds - timeLeft} seconds</p></> : <></>}
+            {isFinished ? <>
+              <p>Errors</p>
+              {incorrect.map((item) => {
+                return <p>{item}</p>
+              })}
+            </> : <></>}
             <button onClick={start} class="btn btn-dark">Start</button>
           </div>
         }
